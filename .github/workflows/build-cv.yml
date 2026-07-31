@@ -1,0 +1,35 @@
+name: Build CV
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "cv.tex"
+      - "src/**"
+      - "Makefile"
+      - ".github/workflows/build-cv.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Compile LaTeX CV
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: cv.tex
+
+      - name: Publish canonical PDF filename
+        run: mv cv.pdf Yipeng_Xu_CV.pdf
+
+      - name: Commit compiled PDF
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Build latest CV PDF [skip ci]"
+          file_pattern: Yipeng_Xu_CV.pdf
