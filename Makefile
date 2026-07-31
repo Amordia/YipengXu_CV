@@ -17,7 +17,7 @@ build:
 check: build verify
 
 verify:
-	EXPECTED_PAGES=$(EXPECTED_PAGES) ./scripts/verify-pdf.sh "$(PDF)"
+	EXPECTED_PAGES=$(EXPECTED_PAGES) bash scripts/verify-pdf.sh "$(PDF)"
 
 watch:
 	$(LATEXMK) $(LATEXMK_FLAGS) -pvc $(ROOT_TEX)
