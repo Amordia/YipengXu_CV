@@ -2,7 +2,7 @@
 
 [![CV CI](https://github.com/Amordia/YipengXu_CV/actions/workflows/build-cv.yml/badge.svg)](https://github.com/Amordia/YipengXu_CV/actions/workflows/build-cv.yml)
 
-This repository contains the academic curriculum vitae of **Yipeng Xu**, including its LaTeX source, validation tooling, and automated PDF publication.
+This repository contains the academic curriculum vitae of **Yipeng Xu**, including its maintainable LaTeX source, validation tooling, and automated PDF publication.
 
 [**View or download the canonical CV (PDF)**](./Yipeng_Xu_CV.pdf)
 
@@ -10,14 +10,26 @@ This repository contains the academic curriculum vitae of **Yipeng Xu**, includi
 
 ```text
 .
-├── cv.tex                       # Stable LaTeX entry point
-├── src/                         # Effective CV source, preserved verbatim
+├── cv.tex                       # Minimal document entry point
+├── tex/
+│   ├── packages.tex             # Required LaTeX dependencies
+│   ├── style.tex                # Geometry, colours, and typography
+│   ├── commands.tex             # Reusable CV macros
+│   └── metadata.tex             # Name, email, links, and update date
+├── sections/                    # CV content grouped by semantic section
 ├── scripts/verify-pdf.sh        # Structural PDF validation
 ├── Makefile                     # Local build, check, watch, and cleanup targets
 └── .github/workflows/
     ├── build-cv.yml             # Read-only CI for pushes and pull requests
     └── publish-cv.yml           # Publishes the canonical PDF from main
 ```
+
+## Editing
+
+- Change personal details in `tex/metadata.tex`.
+- Change reusable layout primitives in `tex/style.tex` and `tex/commands.tex`.
+- Change CV wording in the corresponding file under `sections/`.
+- Keep the `%` at the end of included `.tex` files and the `\input{...}%` lines in `cv.tex`; these suppress boundary whitespace and preserve the verified layout.
 
 ## Build locally
 
@@ -42,15 +54,15 @@ make help
 
 The local build output is `cv.pdf`. The public, canonical filename is `Yipeng_Xu_CV.pdf`.
 
+## Rendering stability
+
+The refactored source preserves the original CV content and rendering. The baseline and refactored PDFs were rasterized at 200 DPI and compared page by page with zero changed pixels.
+
 ## Automation model
 
 - **CV CI** compiles with TeX Live 2025, validates the two-page A4 PDF, and uploads it as a temporary workflow artifact. It has read-only repository permissions.
 - **Publish CV PDF** is the only workflow with write permission. It runs after source changes reach `main` and commits `Yipeng_Xu_CV.pdf` only when the generated file changed.
 - Dependabot checks GitHub Actions dependencies monthly.
-
-## Content and rendering stability
-
-The engineering configuration is kept outside the effective LaTeX source. Changes to tooling should not modify `cv.tex` or `src/*.tex`; this prevents accidental changes to wording, line wrapping, pagination, or visual layout.
 
 ## License
 
