@@ -5,14 +5,16 @@ on:
     branches: [main]
     paths:
       - "cv.tex"
-      - "src/**"
+      - "tex/**"
+      - "sections/**"
       - "Makefile"
       - "scripts/**"
       - ".github/workflows/build-cv.yml"
   pull_request:
     paths:
       - "cv.tex"
-      - "src/**"
+      - "tex/**"
+      - "sections/**"
       - "Makefile"
       - "scripts/**"
       - ".github/workflows/build-cv.yml"
