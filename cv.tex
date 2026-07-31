@@ -1,6 +1,22 @@
-% Main entry point. Source is split into parts to keep the repository easy to maintain.
-% The compiled PDF is generated automatically by GitHub Actions.
-\input{src/part_00.tex}
-\input{src/part_01.tex}
-\input{src/part_02.tex}
-\input{src/part_03.tex}
+% !TeX program = pdflatex
+% !TeX root = cv.tex
+\documentclass[a4paper,11pt]{article}
+
+\input{tex/packages}%
+\input{tex/style}%
+\input{tex/commands}%
+\input{tex/metadata}%
+
+\begin{document}
+\color{textgray}
+\fontfamily{cmr}\selectfont
+
+\input{sections/header}%
+\input{sections/education}%
+\input{sections/research-and-skills}%
+\input{sections/coursework}%
+\input{sections/publications}%
+\input{sections/research-experience}%
+\input{sections/awards}%
+
+\end{document}

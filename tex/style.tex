@@ -1,0 +1,26 @@
+% Colour palette.
+\definecolor{headergray}{HTML}{E0E0E0}
+\definecolor{darkgray}{HTML}{555555}
+\definecolor{textgray}{HTML}{333333}
+
+% Page geometry and headers/footers.
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\geometry{left=1.4cm, top=0.8cm, right=1.2cm, bottom=1cm}
+
+% Global typography and links.
+\urlstyle{same}
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Section headings.
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large\bfseries\color{darkgray}
+}{}{0em}{}[\color{darkgray}\titlerule \vspace{-7pt}]
+
+% List marker and tabularx column used by the header.
+\renewcommand{\labelitemi}{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}%

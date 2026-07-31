@@ -1,6 +1,7 @@
-name: CV CI
+name: Publish CV PDF
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
@@ -9,32 +10,24 @@ on:
       - "sections/**"
       - "Makefile"
       - "scripts/**"
-      - ".github/workflows/build-cv.yml"
-  pull_request:
-    paths:
-      - "cv.tex"
-      - "tex/**"
-      - "sections/**"
-      - "Makefile"
-      - "scripts/**"
-      - ".github/workflows/build-cv.yml"
-  workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
-  group: cv-ci-${{ github.workflow }}-${{ github.ref }}
+  group: publish-cv-main
   cancel-in-progress: true
 
 jobs:
-  build-and-verify:
+  publish:
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - name: Compile with pinned TeX Live
         uses: xu-cheng/latex-action@v4
@@ -49,13 +42,19 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes --no-install-recommends poppler-utils
 
-      - name: Validate output
-        run: make verify PDF=cv.pdf EXPECTED_PAGES=2
+      - name: Validate and stage canonical PDF
+        run: |
+          make verify PDF=cv.pdf EXPECTED_PAGES=2
+          cp cv.pdf Yipeng_Xu_CV.pdf
 
-      - name: Upload compiled PDF
-        uses: actions/upload-artifact@v7
-        with:
-          name: yipeng-xu-cv-${{ github.sha }}
-          path: cv.pdf
-          if-no-files-found: error
-          retention-days: 14
+      - name: Commit PDF only when it changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Yipeng_Xu_CV.pdf
+          if git diff --cached --quiet; then
+            echo "Canonical PDF is already up to date."
+          else
+            git commit -m "build: publish latest CV PDF [skip ci]"
+            git push
+          fi

@@ -1,7 +1,20 @@
+# latexmk and TeX auxiliary files
 *.aux
+*.bbl
+*.bcf
+*.blg
 *.fdb_latexmk
 *.fls
 *.log
 *.out
+*.run.xml
 *.synctex.gz
+*.toc
+
+# Local build output. The canonical published PDF has a different name.
 cv.pdf
+
+# Editor and operating-system files
+.DS_Store
+*.swp
+.vscode/
