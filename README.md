@@ -4,7 +4,7 @@
 
 This repository contains the academic curriculum vitae of **Yipeng Xu**, including its maintainable LaTeX source, validation tooling, and automated PDF publication.
 
-[**View or download the canonical CV (PDF)**](./Yipeng_Xu_CV.pdf)
+[**Open the CV in GitHub's PDF viewer**](https://github.com/Amordia/YipengXu_CV/blob/main/Yipeng_Xu_CV.pdf) · [**Download the PDF directly**](https://raw.githubusercontent.com/Amordia/YipengXu_CV/main/Yipeng_Xu_CV.pdf)
 
 ## Repository layout
 
