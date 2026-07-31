@@ -1,16 +1,23 @@
 # Contributing
 
-This repository intentionally separates CV content from build and release automation.
+The source is organized by responsibility so content edits and layout edits remain easy to review.
 
-## Editing the CV
+## Source map
 
-- `cv.tex` is the entry point.
-- The effective LaTeX source is stored in `src/part_00.tex` through `src/part_03.tex`.
-- Do not reformat or move LaTeX commands merely for style: small whitespace changes can affect line and page breaks.
+- `cv.tex`: document lifecycle and section order only.
+- `tex/packages.tex`: package dependencies in rendering-sensitive order.
+- `tex/style.tex`: colours, page geometry, typography, and list appearance.
+- `tex/commands.tex`: reusable semantic CV commands.
+- `tex/metadata.tex`: personal details and profile links.
+- `sections/*.tex`: rendered CV content grouped by section.
+
+## Rendering-sensitive boundaries
+
+Each included `.tex` file intentionally ends with `%`, and each `\input{...}` directive in `cv.tex` also ends with `%`. Do not remove these markers: they prevent TeX from introducing whitespace at file boundaries and are required for pixel-identical rendering.
 
 ## Local validation
 
-Install a TeX Live distribution, `latexmk`, and Poppler utilities, then run:
+Install TeX Live, `latexmk`, and Poppler utilities, then run:
 
 ```bash
 make check
@@ -18,6 +25,13 @@ make check
 
 The command compiles the document and verifies that the output is a searchable, two-page A4 PDF.
 
+For layout-sensitive refactors, render both PDFs and compare them:
+
+```bash
+python /home/oai/skills/pdfs/scripts/compare_renders.py \
+  baseline.pdf cv.pdf --out_dir diff --dpi 200
+```
+
 ## Publishing
 
-Pull requests run the read-only `CV CI` workflow and expose the compiled PDF as a temporary workflow artifact. The canonical `Yipeng_Xu_CV.pdf` is updated only by the `Publish CV PDF` workflow after changes reach `main`, or when that workflow is started manually.
+Pull requests run the read-only `CV CI` workflow and expose the compiled PDF as a temporary artifact. The canonical `Yipeng_Xu_CV.pdf` is updated only by the `Publish CV PDF` workflow after changes reach `main`, or when that workflow is started manually.
