@@ -1,0 +1,54 @@
+% Generic labelled item, currently used by coursework.
+\newcommand{\cvItem}[2]{
+  \item{
+    \textbf{#1}{\hspace{0.5mm}#2 \vspace{-0.5mm}}
+  }
+}
+
+% Award row: description on the left, year on the right.
+\newcommand{\cvAward}[2]{%
+  \item \small
+    \hspace{0.5em}#1\hfill{\small #2}\\[-1.4em]
+}
+
+% Education row: degree/institution followed by details/date.
+\newcommand{\cvEducationEntry}[4]{%
+  \vspace{0mm}\item
+  \noindent
+  \makebox[\linewidth]{\textbf{#1}\hfill\textit{#4}}\\[0.25ex]
+  \makebox[\linewidth]{#3\hfill\small #2}%
+  \vspace{-2em}
+}
+
+% Research-experience block.
+% Arguments: title, role/date, advisor line, bullet-list body.
+\newcommand{\cvResearchEntry}[4]{%
+  \vspace{0em}
+  \begin{tabular*}{0.98\textwidth}[t]{@{\extracolsep{\fill}}l r}
+    \vspace{0.2em}
+    \textbf{\underline{#1}} & \small #2 \\
+  \end{tabular*}
+  \noindent \textbf{Advisor:} #3 \hfill \small \par
+  \noindent
+  \vspace{-2.25em}
+  \begin{itemize}[leftmargin=*, label=--, itemsep=0pt]
+    \item #4
+  \end{itemize}
+  \vspace{-2mm}
+}
+
+\newcommand{\cvCourseItem}[2]{\cvItem{#1}{#2}\vspace{-4pt}}
+
+% Compact list helpers. These remain commands rather than environments to
+% preserve the exact grouping and spacing behaviour of the original source.
+\newcommand{\cvEducationListStart}{\begin{itemize}[leftmargin=*,labelsep=1mm]}
+\newcommand{\cvAwardListStart}{\begin{itemize}[leftmargin=*,labelsep=0mm,itemsep=0.8mm]}
+\newcommand{\cvResearchListStart}{\begin{itemize}[leftmargin=*]}
+\newcommand{\cvResearchListEnd}{\end{itemize}}
+\newcommand{\cvCourseListStart}{\begin{itemize}[leftmargin=*,itemsep=1.7mm, rightmargin=2ex]}
+\newcommand{\cvBulletListStart}{\begin{justify}\begin{itemize}[leftmargin=3ex, rightmargin=2ex, noitemsep,labelsep=1.2mm,itemsep=0mm]}
+
+\newcommand{\cvEducationListEnd}{\end{itemize}\vspace{2mm}}
+\newcommand{\cvAwardListEnd}{\end{itemize}\vspace{2mm}}
+\newcommand{\cvCourseListEnd}{\end{itemize}\vspace{-2mm}}
+\newcommand{\cvBulletListEnd}{\end{itemize}\end{justify}\vspace{-2mm}}%
