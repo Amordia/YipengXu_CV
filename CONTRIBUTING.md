@@ -25,12 +25,7 @@ make check
 
 The command compiles the document and verifies that the output is a searchable, two-page A4 PDF.
 
-For layout-sensitive refactors, render both PDFs and compare them:
-
-```bash
-python /home/oai/skills/pdfs/scripts/compare_renders.py \
-  baseline.pdf cv.pdf --out_dir diff --dpi 200
-```
+For layout-sensitive refactors, compare rasterized versions of the baseline and candidate PDFs at the same DPI. The repository CI performs structural checks; pixel-regression checks are run when reorganizing rendering-sensitive source.
 
 ## Publishing
 
