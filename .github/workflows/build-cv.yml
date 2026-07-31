@@ -1,4 +1,4 @@
-name: Build CV
+name: CV CI
 
 on:
   push:
@@ -7,29 +7,53 @@ on:
       - "cv.tex"
       - "src/**"
       - "Makefile"
+      - "scripts/**"
+      - ".github/workflows/build-cv.yml"
+  pull_request:
+    paths:
+      - "cv.tex"
+      - "src/**"
+      - "Makefile"
+      - "scripts/**"
       - ".github/workflows/build-cv.yml"
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: cv-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build:
+  build-and-verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Compile LaTeX CV
-        uses: xu-cheng/latex-action@v3
+      - name: Compile with pinned TeX Live
+        uses: xu-cheng/latex-action@v4
         with:
           root_file: cv.tex
+          texlive_version: 2025
+          os: debian
+          args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
 
-      - name: Publish canonical PDF filename
-        run: mv cv.pdf Yipeng_Xu_CV.pdf
+      - name: Install PDF validation tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends poppler-utils
 
-      - name: Commit compiled PDF
-        uses: stefanzweifel/git-auto-commit-action@v5
+      - name: Validate output
+        run: make verify PDF=cv.pdf EXPECTED_PAGES=2
+
+      - name: Upload compiled PDF
+        uses: actions/upload-artifact@v7
         with:
-          commit_message: "Build latest CV PDF [skip ci]"
-          file_pattern: Yipeng_Xu_CV.pdf
+          name: yipeng-xu-cv-${{ github.sha }}
+          path: cv.pdf
+          if-no-files-found: error
+          retention-days: 14
